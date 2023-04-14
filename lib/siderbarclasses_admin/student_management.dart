@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 /// The home page of the application which hosts the datagrid.
@@ -24,6 +25,17 @@ class _StudentManagementState extends State<StudentManagement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Container(
+        width: 200,
+        child: FloatingActionButton(
+          backgroundColor: AppColors.primary,
+          shape: BeveledRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          onPressed: () {},
+          child: Text("Add Students"),
+        ),
+      ),
       body: SfDataGrid(
         source: employeeDataSource,
         selectionMode: SelectionMode.multiple,
