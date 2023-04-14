@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^2.9.0
   sidebarx: ^0.15.0
+  loading_animation_widget: ^1.2.0+4
+  syncfusion_flutter_datagrid: ^21.1.39
 
 dev_dependencies:
   flutter_test:
