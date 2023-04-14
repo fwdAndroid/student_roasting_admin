@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_roasting_admin/add_forms_admin/add_student.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -32,7 +33,10 @@ class _StudentManagementState extends State<StudentManagement> {
           shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (builder) => AddStudent()));
+          },
           child: Text("Add Students"),
         ),
       ),
