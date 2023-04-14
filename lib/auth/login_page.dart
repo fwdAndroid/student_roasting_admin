@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:student_roasting_admin/widgets/exc_button.dart';
 import 'package:student_roasting_admin/widgets/input_text.dart';
+import 'package:student_roasting_admin/widgets/sidebar.dart';
 import 'package:student_roasting_admin/widgets/styles.dart';
 
 class LoginPage extends StatelessWidget {
@@ -133,7 +134,10 @@ class _FormSectionState extends State<_FormSection> {
                   fontWeight: FontWeight.w500,
                   fontSize: 16),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (builder) => SideDrawer()));
+            },
           ),
           const SizedBox(height: 30),
         ],
