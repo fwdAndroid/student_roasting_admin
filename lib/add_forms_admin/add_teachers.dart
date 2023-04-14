@@ -170,6 +170,72 @@ class _AddTeachersState extends State<AddTeachers> {
                     isPassword: false,
                     enabled: true,
                   ),
+                  SizedBox(
+                    height: 9,
+                  ),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Email",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 9),
+                  InputText(
+                    controller: _plotName,
+                    labelText: "fwdkaleem@gmail.com",
+                    keyboardType: TextInputType.visiblePassword,
+                    onChanged: (value) {},
+                    onSaved: (val) {},
+                    textInputAction: TextInputAction.done,
+                    isPassword: false,
+                    enabled: true,
+                  ),
+                  SizedBox(
+                    height: 9,
+                  ),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Password",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 9),
+                  InputText(
+                    controller: _plotName,
+                    labelText: "********",
+                    keyboardType: TextInputType.visiblePassword,
+                    onChanged: (value) {},
+                    onSaved: (val) {},
+                    textInputAction: TextInputAction.done,
+                    isPassword: false,
+                    enabled: true,
+                  ),
+                  SizedBox(
+                    height: 9,
+                  ),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Confrim Password",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 9),
+                  InputText(
+                    controller: _plotName,
+                    labelText: "********",
+                    keyboardType: TextInputType.visiblePassword,
+                    onChanged: (value) {},
+                    onSaved: (val) {},
+                    textInputAction: TextInputAction.done,
+                    isPassword: false,
+                    enabled: true,
+                  ),
                   const SizedBox(height: 10),
                   //Plot Price
                   const Align(
