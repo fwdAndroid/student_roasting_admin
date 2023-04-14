@@ -74,8 +74,8 @@ class ExampleSidebarX extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         hoverColor: scaffoldBackgroundColor,
-        textStyle: TextStyle(color: Colors.black.withOpacity(0.7)),
-        selectedTextStyle: const TextStyle(color: Colors.green),
+        textStyle: TextStyle(color: Colors.white),
+        selectedTextStyle: const TextStyle(color: Colors.white),
         itemTextPadding: const EdgeInsets.only(left: 30),
         selectedItemTextPadding: const EdgeInsets.only(left: 30),
         itemDecoration: BoxDecoration(
@@ -98,11 +98,11 @@ class ExampleSidebarX extends StatelessWidget {
           ],
         ),
         iconTheme: IconThemeData(
-          color: Colors.black.withOpacity(0.7),
+          color: Colors.white,
           size: 20,
         ),
         selectedIconTheme: const IconThemeData(
-          color: Colors.black,
+          color: Color(0xffeb4474),
           size: 20,
         ),
       ),
@@ -114,31 +114,37 @@ class ExampleSidebarX extends StatelessWidget {
       ),
       headerBuilder: (context, extended) {
         return SizedBox(
-          height: 200,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              "assets/logo.png",
-              height: 200,
+          height: 140,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Admin Panel",
+                style: TextStyle(color: Colors.white, fontSize: 30),
+              ),
+              //  Image.asset(
+              //   "assets/logo.png",
+              //   height: 200,
+              // ),
             ),
           ),
         );
       },
       items: [
         SidebarXItem(
-          icon: Icons.support_agent,
+          icon: Icons.school,
           label: 'Student Management',
         ),
         SidebarXItem(
-          icon: Icons.person,
+          icon: Icons.space_dashboard_outlined,
           label: 'Teacher Management',
         ),
         SidebarXItem(
-          icon: Icons.subject,
+          icon: Icons.date_range,
           label: 'DateSheet Management',
         ),
         SidebarXItem(
-          icon: Icons.location_city,
+          icon: Icons.payment,
           label: 'Payment Management',
         ),
         SidebarXItem(
@@ -146,7 +152,7 @@ class ExampleSidebarX extends StatelessWidget {
           label: 'Notifications',
         ),
         SidebarXItem(
-          icon: Icons.notifications,
+          icon: Icons.logout,
           label: 'Logout',
         ),
       ],
@@ -181,21 +187,30 @@ class _ScreensExample extends StatelessWidget {
             return Noti();
           case 5:
             return AlertDialog(
-              title: const Text('AlertDialog Title'),
+              title: const Text('Sign Out Alert'),
               content: SingleChildScrollView(
                 child: ListBody(
                   children: const <Widget>[
-                    Text('This is a demo alert dialog.'),
-                    Text('Would you like to approve of this message?'),
+                    Text('Are you sure to logout from Admin Panel'),
                   ],
                 ),
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Approve'),
+                  child: const Text(
+                    'Yes',
+                    style: TextStyle(color: Color(0xffeb4474)),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
+                ),
+                TextButton(
+                  child: const Text(
+                    'No',
+                    style: TextStyle(color: Color(0xffeb4474)),
+                  ),
+                  onPressed: () {},
                 ),
               ],
             );
@@ -211,10 +226,9 @@ class _ScreensExample extends StatelessWidget {
   }
 }
 
-const primaryColor = Colors.white;
-const canvasColor = Colors.white;
-const scaffoldBackgroundColor = Colors.greenAccent;
-const accentCanvasColor = Colors.greenAccent;
+const canvasColor = Color(0xff2294ed);
+const scaffoldBackgroundColor = Color(0xffeb4474);
+const accentCanvasColor = Color(0xff2294ed);
 const white = Colors.white;
 final actionColor = const Color(0xFF5F5FA7).withOpacity(0.6);
 final divider = Divider(color: Colors.black.withOpacity(0.3), height: 1);
