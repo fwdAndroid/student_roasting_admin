@@ -15,10 +15,10 @@ class AddStudentAssignment extends StatefulWidget {
 }
 
 class _AddStudentAssignmentState extends State<AddStudentAssignment> {
-  TextEditingController _plotName = TextEditingController();
-  TextEditingController _plotPrice = TextEditingController();
-  TextEditingController _plotKhasra = TextEditingController();
-  TextEditingController _plotLocation = TextEditingController();
+  TextEditingController studentname = TextEditingController();
+  TextEditingController studenttitle = TextEditingController();
+  TextEditingController studentclass = TextEditingController();
+  TextEditingController studentsubject = TextEditingController();
   bool _isLoading = false;
   String dropdownValue = 'Project Name';
   @override
@@ -149,8 +149,8 @@ class _AddStudentAssignmentState extends State<AddStudentAssignment> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotKhasra,
-                    labelText: "Quran",
+                    controller: studentname,
+                    labelText: "Qasim",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},
                     onSaved: (val) {},
@@ -171,7 +171,7 @@ class _AddStudentAssignmentState extends State<AddStudentAssignment> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotKhasra,
+                    controller: studentclass,
                     labelText: "Class A",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},
@@ -193,7 +193,7 @@ class _AddStudentAssignmentState extends State<AddStudentAssignment> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotKhasra,
+                    controller: studentsubject,
                     labelText: "Quran",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},
@@ -215,7 +215,7 @@ class _AddStudentAssignmentState extends State<AddStudentAssignment> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotKhasra,
+                    controller: studenttitle,
                     labelText: "Assignment",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},
