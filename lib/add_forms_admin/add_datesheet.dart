@@ -18,6 +18,8 @@ class _AddDateSheetState extends State<AddDateSheet> {
   TextEditingController _plotPrice = TextEditingController();
   TextEditingController _plotKhasra = TextEditingController();
   TextEditingController _plotLocation = TextEditingController();
+  TextEditingController day = TextEditingController();
+
   bool _isLoading = false;
   String dropdownValue = 'Project Name';
   @override
@@ -249,7 +251,7 @@ class _AddDateSheetState extends State<AddDateSheet> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotKhasra,
+                    controller: day,
                     labelText: "Wednesday",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},

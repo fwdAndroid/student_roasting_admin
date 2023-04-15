@@ -14,10 +14,16 @@ class AddStudent extends StatefulWidget {
 }
 
 class _AddStudentState extends State<AddStudent> {
-  TextEditingController _plotName = TextEditingController();
-  TextEditingController _plotPrice = TextEditingController();
-  TextEditingController _plotKhasra = TextEditingController();
-  TextEditingController _plotLocation = TextEditingController();
+  TextEditingController parentname = TextEditingController();
+  TextEditingController parentmobile = TextEditingController();
+  TextEditingController studentname = TextEditingController();
+  TextEditingController parentemail = TextEditingController();
+  TextEditingController address = TextEditingController();
+
+  TextEditingController studentclass = TextEditingController();
+  TextEditingController subject = TextEditingController();
+  TextEditingController fees = TextEditingController();
+
   bool _isLoading = false;
   String dropdownValue = 'Project Name';
   @override
@@ -148,20 +154,17 @@ class _AddStudentState extends State<AddStudent> {
                     height: 30,
                   ),
 
-                  SizedBox(
-                    height: 20,
-                  ),
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Father Name",
+                      "Parent Name",
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                     ),
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotName,
+                    controller: parentname,
                     labelText: "Geroge",
                     keyboardType: TextInputType.visiblePassword,
                     onChanged: (value) {},
@@ -171,28 +174,46 @@ class _AddStudentState extends State<AddStudent> {
                     enabled: true,
                   ),
                   const SizedBox(height: 10),
-                  //Plot Price
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Address",
+                      "Parent Email",
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                     ),
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotPrice,
-                    labelText: "234 B Eden Garden",
-                    keyboardType: TextInputType.text,
+                    controller: parentemail,
+                    labelText: "fwdkaleem@gmail.com",
+                    keyboardType: TextInputType.visiblePassword,
                     onChanged: (value) {},
                     onSaved: (val) {},
                     textInputAction: TextInputAction.done,
                     isPassword: false,
                     enabled: true,
                   ),
+                  const SizedBox(height: 10),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Parent Mobile Number",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    ),
+                  ),
                   const SizedBox(height: 9),
-                  //location of plot
+                  InputText(
+                    controller: parentmobile,
+                    labelText: "+923068231232",
+                    keyboardType: TextInputType.visiblePassword,
+                    onChanged: (value) {},
+                    onSaved: (val) {},
+                    textInputAction: TextInputAction.done,
+                    isPassword: false,
+                    enabled: true,
+                  ),
+                  const SizedBox(height: 10),
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -203,19 +224,39 @@ class _AddStudentState extends State<AddStudent> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotLocation,
-                    labelText: "Fawad Kaleem",
-                    keyboardType: TextInputType.number,
+                    controller: studentname,
+                    labelText: "Geroge",
+                    keyboardType: TextInputType.visiblePassword,
                     onChanged: (value) {},
                     onSaved: (val) {},
                     textInputAction: TextInputAction.done,
                     isPassword: false,
                     enabled: true,
                   ),
-                  //Kashra Info
-                  SizedBox(
-                    height: 9,
+                  const SizedBox(height: 10),
+
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Address",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    ),
                   ),
+                  const SizedBox(height: 9),
+                  InputText(
+                    controller: address,
+                    labelText: "234 B Eden Garden",
+                    keyboardType: TextInputType.text,
+                    onChanged: (value) {},
+                    onSaved: (val) {},
+                    textInputAction: TextInputAction.done,
+                    isPassword: false,
+                    enabled: true,
+                  ),
+                  const SizedBox(height: 9),
+                  //location of plot
+
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -226,7 +267,7 @@ class _AddStudentState extends State<AddStudent> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotKhasra,
+                    controller: studentclass,
                     labelText: "Class A",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},
@@ -248,7 +289,7 @@ class _AddStudentState extends State<AddStudent> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotKhasra,
+                    controller: subject,
                     labelText: "Quran",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},
@@ -270,7 +311,7 @@ class _AddStudentState extends State<AddStudent> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotKhasra,
+                    controller: fees,
                     labelText: "234",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},

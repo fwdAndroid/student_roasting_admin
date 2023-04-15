@@ -14,10 +14,16 @@ class AddTeachers extends StatefulWidget {
 }
 
 class _AddTeachersState extends State<AddTeachers> {
-  TextEditingController _plotName = TextEditingController();
-  TextEditingController _plotPrice = TextEditingController();
-  TextEditingController _plotKhasra = TextEditingController();
-  TextEditingController _plotLocation = TextEditingController();
+  TextEditingController teachername = TextEditingController();
+  TextEditingController teacheremail = TextEditingController();
+  TextEditingController teacherpassword = TextEditingController();
+  TextEditingController teacherconfrimpassword = TextEditingController();
+  TextEditingController teacherqualification = TextEditingController();
+
+  TextEditingController teachersubjects = TextEditingController();
+  TextEditingController assignedclass = TextEditingController();
+  TextEditingController salary = TextEditingController();
+
   bool _isLoading = false;
   String dropdownValue = 'Project Name';
   @override
@@ -161,7 +167,7 @@ class _AddTeachersState extends State<AddTeachers> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotName,
+                    controller: teachername,
                     labelText: "Geroge",
                     keyboardType: TextInputType.visiblePassword,
                     onChanged: (value) {},
@@ -183,7 +189,7 @@ class _AddTeachersState extends State<AddTeachers> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotName,
+                    controller: teacheremail,
                     labelText: "fwdkaleem@gmail.com",
                     keyboardType: TextInputType.visiblePassword,
                     onChanged: (value) {},
@@ -205,7 +211,7 @@ class _AddTeachersState extends State<AddTeachers> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotName,
+                    controller: teacherpassword,
                     labelText: "********",
                     keyboardType: TextInputType.visiblePassword,
                     onChanged: (value) {},
@@ -227,7 +233,7 @@ class _AddTeachersState extends State<AddTeachers> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotName,
+                    controller: teacherconfrimpassword,
                     labelText: "********",
                     keyboardType: TextInputType.visiblePassword,
                     onChanged: (value) {},
@@ -248,7 +254,7 @@ class _AddTeachersState extends State<AddTeachers> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotPrice,
+                    controller: teacherqualification,
                     labelText: "Masters",
                     keyboardType: TextInputType.text,
                     onChanged: (value) {},
@@ -269,7 +275,7 @@ class _AddTeachersState extends State<AddTeachers> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotLocation,
+                    controller: teachersubjects,
                     labelText: "Quran, Arabic, English",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},
@@ -292,7 +298,7 @@ class _AddTeachersState extends State<AddTeachers> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotKhasra,
+                    controller: assignedclass,
                     labelText: "Class A, Class B, Class C",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},
@@ -315,7 +321,7 @@ class _AddTeachersState extends State<AddTeachers> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotKhasra,
+                    controller: salary,
                     labelText: "234",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},
