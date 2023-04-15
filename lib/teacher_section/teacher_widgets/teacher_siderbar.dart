@@ -189,7 +189,7 @@ class _ScreensExample extends StatelessWidget {
               content: SingleChildScrollView(
                 child: ListBody(
                   children: const <Widget>[
-                    Text('Are you sure to logout from Admin Panel'),
+                    Text('Are you sure to logout from Teacher Panel'),
                   ],
                 ),
               ),
@@ -208,7 +208,9 @@ class _ScreensExample extends StatelessWidget {
                     'No',
                     style: TextStyle(color: Color(0xffeb4474)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                 ),
               ],
             );
