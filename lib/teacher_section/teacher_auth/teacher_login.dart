@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:student_roasting_admin/teacher_section/teacher_auth/teacher_login.dart';
+import 'package:student_roasting_admin/auth/login_page.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:student_roasting_admin/widgets/exc_button.dart';
 import 'package:student_roasting_admin/widgets/input_text.dart';
 import 'package:student_roasting_admin/widgets/sidebar.dart';
 import 'package:student_roasting_admin/widgets/styles.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class TeacherLogin extends StatelessWidget {
+  const TeacherLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +129,7 @@ class _FormSectionState extends State<_FormSection> {
             verticalPadding: 0,
             color: AppColors.primary,
             child: const Text(
-              "Log in",
+              "Teacher Log In",
               style: TextStyle(
                   color: AppColors.neutral,
                   fontWeight: FontWeight.w500,
@@ -144,9 +144,9 @@ class _FormSectionState extends State<_FormSection> {
           TextButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (builder) => TeacherLogin()));
+                    MaterialPageRoute(builder: (builder) => LoginPage()));
               },
-              child: Text("SignIn As Teacher")),
+              child: Text("SignIn As Admin")),
           const SizedBox(height: 30),
         ],
       ),
