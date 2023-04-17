@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:student_roasting_admin/auth/login_data.dart';
+import 'package:student_roasting_admin/provider/circular_provider.dart';
 import 'package:student_roasting_admin/teacher_section/teacher_auth/teacher_login.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:student_roasting_admin/widgets/exc_button.dart';
 import 'package:student_roasting_admin/widgets/input_text.dart';
 import 'package:student_roasting_admin/widgets/sidebar.dart';
 import 'package:student_roasting_admin/widgets/styles.dart';
+import 'package:student_roasting_admin/widgets/utils.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -136,8 +140,36 @@ class _FormSectionState extends State<_FormSection> {
                   fontSize: 16),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (builder) => SideDrawer()));
+              if (emailControler.text.isEmpty && pass.text.isEmpty) {
+                Customdialog()
+                    .showInSnackBar("Both Fields are Required", context);
+              } else if (emailControler.text.isEmpty) {
+                Customdialog()
+                    .showInSnackBar("Email Field are Required", context);
+              } else if (pass.text.isEmpty) {
+                Customdialog()
+                    .showInSnackBar("Password Field are Required", context);
+              } else if (pass.text.length < 5) {
+                Customdialog()
+                    .showInSnackBar("Password minimum 5 charaters", context);
+              } else if (emailControler.text != 'admin@gmail.com' &&
+                  pass.text != '123456') {
+                Customdialog()
+                    .showInSnackBar("Email and password is wrong", context);
+              } else if (emailControler.text == 'admin@gmail.com' &&
+                  pass.text == '123456') {
+                Customdialog.showDialogBox(context);
+
+                Provider.of<CircularProgressProvider>(context, listen: false)
+                    .setValue(true);
+                Future.delayed(Duration(seconds: 0)).then((value) {
+                  Database().login(emailControler.text, pass.text, context);
+                });
+              } else if (emailControler.text != 'admin@gmail.com') {
+                Customdialog().showInSnackBar("Email is wrong", context);
+              } else if (pass != '123456') {
+                Customdialog().showInSnackBar("Password is wrong", context);
+              }
             },
           ),
           const SizedBox(height: 20),

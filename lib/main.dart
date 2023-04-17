@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_roasting_admin/auth/login_page.dart';
+import 'package:student_roasting_admin/provider/circular_provider.dart';
 import 'package:student_roasting_admin/widgets/sidebar.dart';
 
 void main() async {
@@ -20,7 +22,12 @@ void main() async {
     await Firebase.initializeApp();
   }
   runApp(
-    MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CircularProgressProvider()),
+      ],
+      child: MyApp(),
+    ),
   );
 }
 
