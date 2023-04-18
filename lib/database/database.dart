@@ -40,7 +40,6 @@ class DatabaseMethods {
           uuid: cred.user!.uid,
           email: teacheremail,
           password: teacherpassword,
-          blocked: blocked,
         );
         await firebaseFirestore
             .collection('teachers')

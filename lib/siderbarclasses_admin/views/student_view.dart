@@ -409,7 +409,7 @@ class StudentViewState extends State<StudentView> {
                                       color: Colors.white,
                                     ))
                                   : Text(
-                                      "Upadte",
+                                      "Update",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w500,

@@ -101,8 +101,6 @@ class _TeacherManagementState extends State<TeacherManagement> {
                 DataGridCell<String>(
                     columnName: 'confrim_password',
                     value: data.doc['confrim_password']),
-                DataGridCell<String>(
-                    columnName: 'blocked', value: data.doc['blocked']),
               ]);
             }
 
@@ -134,7 +132,6 @@ class _TeacherManagementState extends State<TeacherManagement> {
                 password: data['password'],
                 teacher_qualification: data['teacher_qualification'],
                 confrim_password: data['confrim_password'],
-                blocked: data['blocked'],
               ));
             }
             employeeDataSource = TeacherDataSource(employeeData);

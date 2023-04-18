@@ -280,7 +280,7 @@ class TeacherViewState extends State<TeacherView> {
                                   color: Colors.white,
                                 ))
                               : Text(
-                                  "Upadte",
+                                  "Update",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w500,

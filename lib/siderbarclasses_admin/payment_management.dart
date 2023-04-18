@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_roasting_admin/add_forms_admin/add_payment.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -25,17 +26,20 @@ class _PaymentManagementState extends State<PaymentManagement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: Container(
-      //   width: 200,
-      //   child: FloatingActionButton(
-      //     backgroundColor: AppColors.primary,
-      //     shape: BeveledRectangleBorder(
-      //       borderRadius: BorderRadius.circular(10.0),
-      //     ),
-      //     onPressed: () {},
-      //     child: Text("Add Payment"),
-      //   ),
-      // ),
+      floatingActionButton: Container(
+        width: 200,
+        child: FloatingActionButton(
+          backgroundColor: AppColors.primary,
+          shape: BeveledRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (builder) => AddPayment()));
+          },
+          child: Text("Add Payment"),
+        ),
+      ),
       body: SfDataGrid(
         selectionMode: SelectionMode.multiple,
         source: employeeDataSource,

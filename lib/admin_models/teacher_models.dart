@@ -9,7 +9,6 @@ class TeacherModels {
   String teacher_name;
   String teacher_subjects;
   String teacher_class;
-  bool blocked;
   final dateTime;
 
   TeacherModels({
@@ -22,7 +21,6 @@ class TeacherModels {
     required this.teacher_name,
     required this.teacher_subjects,
     required this.teacher_class,
-    required this.blocked,
   });
 
   ///Converting OBject into Json Object
@@ -33,7 +31,6 @@ class TeacherModels {
         'password': password,
         'teacher_qualification': teacher_qualification,
         'confrim_password': confrim_password,
-        'blocked': blocked,
         'teacher_subjects': teacher_subjects,
         'teacher_name': teacher_name,
         'dateTime': DateTime.now().millisecondsSinceEpoch.toString(),
@@ -44,15 +41,15 @@ class TeacherModels {
     var snapshot = snaps.data() as Map<String, dynamic>;
 
     return TeacherModels(
-        teacher_qualification: snapshot['teacher_qualification'],
-        teacher_class: snapshot['teacher_class'],
-        confrim_password: snapshot['confrim_password'],
-        uuid: snapshot['uuid'],
-        email: snapshot['email'],
-        teacher_subjects: snapshot['teacher_subjects'],
-        teacher_name: snapshot['teacher_name'],
-        password: snapshot['password'],
-        dateTime: snapshot['dateTime'],
-        blocked: snapshot['blocked']);
+      teacher_qualification: snapshot['teacher_qualification'],
+      teacher_class: snapshot['teacher_class'],
+      confrim_password: snapshot['confrim_password'],
+      uuid: snapshot['uuid'],
+      email: snapshot['email'],
+      teacher_subjects: snapshot['teacher_subjects'],
+      teacher_name: snapshot['teacher_name'],
+      password: snapshot['password'],
+      dateTime: snapshot['dateTime'],
+    );
   }
 }
