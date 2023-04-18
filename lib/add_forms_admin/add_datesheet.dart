@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:student_roasting_admin/database/database.dart';
+import 'package:weekday_selector/weekday_selector.dart';
+import 'package:intl/intl.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:student_roasting_admin/widgets/exc_button.dart';
 import 'package:student_roasting_admin/widgets/input_text.dart';
@@ -14,14 +17,20 @@ class AddDateSheet extends StatefulWidget {
 }
 
 class _AddDateSheetState extends State<AddDateSheet> {
-  TextEditingController _plotName = TextEditingController();
-  TextEditingController _plotPrice = TextEditingController();
-  TextEditingController _plotKhasra = TextEditingController();
-  TextEditingController _plotLocation = TextEditingController();
-  TextEditingController day = TextEditingController();
+  final values = List.filled(7, true);
+  TextEditingController dateController = TextEditingController();
+  TextEditingController subject = TextEditingController();
 
   bool _isLoading = false;
-  String dropdownValue = 'Project Name';
+  String dropdownValue = 'Class';
+  String dropdownValueName = "Student Name";
+
+  @override
+  void initState() {
+    dateController.text = ""; //set the initial value of text field
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,16 +171,52 @@ class _AddDateSheetState extends State<AddDateSheet> {
                     ),
                   ),
                   const SizedBox(height: 9),
-                  InputText(
-                    controller: _plotName,
-                    labelText: "Class Name",
-                    keyboardType: TextInputType.visiblePassword,
-                    onChanged: (value) {},
-                    onSaved: (val) {},
-                    textInputAction: TextInputAction.done,
-                    isPassword: false,
-                    enabled: true,
-                  ),
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("students")
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        return Column(
+                          children: [
+                            Container(
+                              height: 50,
+                              child: Padding(
+                                padding: EdgeInsets.all(8),
+                                child: DropdownSearch<String>(
+                                  popupProps: PopupProps.menu(
+                                    showSearchBox: true,
+                                    isFilterOnline: true,
+                                    title: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child:
+                                          Center(child: Text("Search Class")),
+                                    ),
+                                    showSelectedItems: true,
+                                    disabledItemFn: (String s) =>
+                                        s.startsWith('I'),
+                                  ),
+                                  items: snapshot.data!.docs
+                                      .map((DocumentSnapshot document) {
+                                        Map<String, dynamic> data = document
+                                            .data()! as Map<String, dynamic>;
+                                        return data["studentclass"];
+                                      })
+                                      .toList()
+                                      .cast<String>(),
+                                  selectedItem: dropdownValue,
+                                  onChanged: (String? day) {
+                                    print(day);
+                                    setState(() {
+                                      dropdownValue = day!;
+                                    });
+                                  },
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      }),
                   const SizedBox(height: 10),
                   //Plot Price
                   const Align(
@@ -183,16 +228,52 @@ class _AddDateSheetState extends State<AddDateSheet> {
                     ),
                   ),
                   const SizedBox(height: 9),
-                  InputText(
-                    controller: _plotPrice,
-                    labelText: "Nals",
-                    keyboardType: TextInputType.text,
-                    onChanged: (value) {},
-                    onSaved: (val) {},
-                    textInputAction: TextInputAction.done,
-                    isPassword: false,
-                    enabled: true,
-                  ),
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("students")
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        return Column(
+                          children: [
+                            Container(
+                              height: 50,
+                              child: Padding(
+                                padding: EdgeInsets.all(8),
+                                child: DropdownSearch<String>(
+                                  popupProps: PopupProps.menu(
+                                    showSearchBox: true,
+                                    isFilterOnline: true,
+                                    title: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Center(
+                                          child: Text("Search Student Name")),
+                                    ),
+                                    showSelectedItems: true,
+                                    disabledItemFn: (String s) =>
+                                        s.startsWith('I'),
+                                  ),
+                                  items: snapshot.data!.docs
+                                      .map((DocumentSnapshot document) {
+                                        Map<String, dynamic> data = document
+                                            .data()! as Map<String, dynamic>;
+                                        return data["studentname"];
+                                      })
+                                      .toList()
+                                      .cast<String>(),
+                                  selectedItem: dropdownValueName,
+                                  onChanged: (String? day) {
+                                    print(day);
+                                    setState(() {
+                                      dropdownValueName = day!;
+                                    });
+                                  },
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      }),
                   const SizedBox(height: 9),
                   //location of plot
                   const Align(
@@ -205,7 +286,7 @@ class _AddDateSheetState extends State<AddDateSheet> {
                   ),
                   const SizedBox(height: 9),
                   InputText(
-                    controller: _plotLocation,
+                    controller: subject,
                     labelText: "Quran",
                     keyboardType: TextInputType.number,
                     onChanged: (value) {},
@@ -227,15 +308,33 @@ class _AddDateSheetState extends State<AddDateSheet> {
                     ),
                   ),
                   const SizedBox(height: 9),
-                  InputText(
-                    controller: _plotKhasra,
-                    labelText: "23 Dec 2022",
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {},
-                    onSaved: (val) {},
-                    textInputAction: TextInputAction.done,
-                    isPassword: false,
-                    enabled: true,
+                  TextField(
+                    controller:
+                        dateController, //editing controller of this TextField
+                    decoration: InputDecoration(
+                        icon: Icon(Icons.calendar_today), //icon of text field
+                        labelText: "Enter Date" //label text of field
+                        ),
+                    readOnly:
+                        true, //set it true, so that user will not able to edit text
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(
+                              2000), //DateTime.now() - not to allow to choose before today.
+                          lastDate: DateTime(2101));
+
+                      if (pickedDate != null) {
+                        String formattedDate =
+                            DateFormat('yyyy-MM-dd').format(pickedDate);
+                        print(formattedDate);
+                        setState(() {
+                          dateController.text =
+                              formattedDate; //set output date to TextField value.
+                        });
+                      } else {}
+                    },
                   ),
 
                   SizedBox(
@@ -250,15 +349,29 @@ class _AddDateSheetState extends State<AddDateSheet> {
                     ),
                   ),
                   const SizedBox(height: 9),
-                  InputText(
-                    controller: day,
-                    labelText: "Wednesday",
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {},
-                    onSaved: (val) {},
-                    textInputAction: TextInputAction.done,
-                    isPassword: false,
-                    enabled: true,
+                  WeekdaySelector(
+                    // weekdays: [
+                    //   'Monday',
+                    //   'Tuesday',
+                    //   'Wednesday',
+                    //   'Thursday',
+                    //   'Friday',
+                    //   'Saturday',
+                    //   'Sunday'
+                    // ],
+                    onChanged: (int day) {
+                      setState(() {
+                        // Use module % 7 as Sunday's index in the array is 0 and
+                        // DateTime.sunday constant integer value is 7.
+                        final index = day % 7;
+                        // We "flip" the value in this example, but you may also
+                        // perform validation, a DB write, an HTTP call or anything
+                        // else before you actually flip the value,
+                        // it's up to your app's needs.
+                        values[index] = !values[index];
+                      });
+                    },
+                    values: values,
                   ),
 
                   SizedBox(height: 10),
@@ -280,7 +393,7 @@ class _AddDateSheetState extends State<AddDateSheet> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),
                           ),
-                    onPressed: () {},
+                    onPressed: makeDateSheet,
                   ),
 
                   const SizedBox(height: 30),
@@ -291,5 +404,40 @@ class _AddDateSheetState extends State<AddDateSheet> {
         ],
       ),
     );
+  }
+
+  void makeDateSheet() async {
+    if (subject.text.isEmpty || dateController.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("All Fields are required")));
+    } else if (subject.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Subjects are required")));
+    } else if (dateController.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Date  is required")));
+    } else {
+      setState(() {
+        _isLoading = true;
+      });
+      String rse = await DatabaseMethods().makeDateSheet(
+        day: values,
+        date: dateController.text,
+        studentclass: dropdownValue,
+        subject: subject.text,
+        studentname: dropdownValueName,
+        dateTime: DateTime.now().millisecondsSinceEpoch.toString(),
+      );
+
+      print(rse);
+      setState(() {
+        _isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Conguration DataSheet is Added")));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (builder) => SideDrawer()));
+    }
   }
 }

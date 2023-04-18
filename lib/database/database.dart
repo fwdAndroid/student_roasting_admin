@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:student_roasting_admin/admin_models/datesheet_models.dart';
 import 'package:student_roasting_admin/admin_models/student_model.dart';
 import 'package:student_roasting_admin/admin_models/teacher_models.dart';
 
@@ -89,6 +90,48 @@ class DatabaseMethods {
             studentclass: studentclass);
         await FirebaseFirestore.instance
             .collection('students')
+            .doc(postId)
+            .set(userModel.toJson());
+
+        res = 'success';
+      } catch (e) {
+        res = e.toString();
+      }
+      return res;
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
+  //Make DateSheet
+  Future<String> makeDateSheet(
+      {required String date,
+      required final day,
+      required String studentclass,
+      required final studentname,
+      required final dateTime,
+      required String subject}) async {
+    String res = 'Some error occured';
+
+    try {
+      //Add User to the database with modal
+
+      try {
+        //Add User to the database with modal
+        String postId = Uuid().v1();
+
+        DateSheetModels userModel = DateSheetModels(
+          subject: subject,
+          dateTime: dateTime,
+          className: studentclass,
+          studentname: studentname,
+          date: date,
+          day: day,
+          uuid: postId,
+        );
+        await FirebaseFirestore.instance
+            .collection('datesheet')
             .doc(postId)
             .set(userModel.toJson());
 
