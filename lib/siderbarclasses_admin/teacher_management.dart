@@ -4,6 +4,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:student_roasting_admin/add_forms_admin/add_teachers.dart';
 import 'package:student_roasting_admin/admin_models/teacher_models.dart';
 import 'package:student_roasting_admin/siderbarclasses_admin/datasource/teacherdatasource.dart';
+import 'package:student_roasting_admin/siderbarclasses_admin/views/teacher_view.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -154,8 +155,8 @@ class _TeacherManagementState extends State<TeacherManagement> {
                       .effectiveRows[details.rowColumnIndex.rowIndex - 1];
                   int index = employeeDataSource.dataGridRows.indexOf(row);
                   var data = snapshot.data!.docs[index];
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) => BusinessView(data: data)));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => TeacherView(data: data)));
                 }
               },
             ),

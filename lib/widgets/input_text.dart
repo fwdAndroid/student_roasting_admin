@@ -4,6 +4,8 @@ import 'package:student_roasting_admin/widgets/styles.dart';
 
 class InputText extends StatefulWidget {
   final String? labelText;
+  final String? hintText;
+
   final TextInputType keyboardType;
   final bool isPassword;
   final FormFieldValidator<String>? validator;
@@ -28,6 +30,7 @@ class InputText extends StatefulWidget {
     this.validator,
     this.onChanged,
     this.onEditingComplete,
+    this.hintText,
     this.onSaved,
     this.focusNode,
     this.onTap,
