@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:student_roasting_admin/admin_models/datesheet_models.dart';
+import 'package:student_roasting_admin/admin_models/payment_models.dart';
 import 'package:student_roasting_admin/admin_models/student_model.dart';
 import 'package:student_roasting_admin/admin_models/teacher_models.dart';
 
@@ -146,34 +147,34 @@ class DatabaseMethods {
   }
 
   //Add Product
-  // Future<String> addProduct({
-  //   required String dimension,
-  //   required String uuid,
-  //   required String productname,
-  //   required String pcs,
-  //   required String rate,
-  // }) async {
-  //   String res = 'Some error occured';
+  Future<String> addPayment(
+      {required int fees,
+      required int reciveamount,
+      required String studentName,
+      required int remaingAmount,
+      required final dateTime}) async {
+    String res = 'Some error occured';
 
-  //   try {
-  //     //Add User to the database with modal
-  //     String postId = Uuid().v1();
+    try {
+      //Add User to the database with modal
+      String postId = Uuid().v1();
 
-  //     ProductModels userModel = ProductModels(
-  //         productname: productname,
-  //         pcs: pcs,
-  //         uuid: postId,
-  //         dimensions: dimension,
-  //         rate: rate);
-  //     await FirebaseFirestore.instance
-  //         .collection('products')
-  //         .doc(postId)
-  //         .set(userModel.toJson());
+      PaymentModel userModel = PaymentModel(
+          recievedPayment: reciveamount,
+          remainingPayment: remaingAmount,
+          uuid: postId,
+          dateTime: dateTime,
+          studentname: studentName,
+          fees: fees);
+      await FirebaseFirestore.instance
+          .collection('payments')
+          .doc(postId)
+          .set(userModel.toJson());
 
-  //     res = 'success';
-  //   } catch (e) {
-  //     res = e.toString();
-  //   }
-  //   return res;
-  // }
+      res = 'success';
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
 }

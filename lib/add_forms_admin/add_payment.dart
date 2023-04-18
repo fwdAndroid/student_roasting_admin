@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:student_roasting_admin/database/database.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:student_roasting_admin/widgets/exc_button.dart';
 import 'package:student_roasting_admin/widgets/input_text.dart';
@@ -19,6 +20,7 @@ class _AddPaymentState extends State<AddPayment> {
 
   bool _isLoading = false;
   String dropdownValueName = "Student Name";
+  String dropdownValuePrice = "Fees";
 
   @override
   Widget build(BuildContext context) {
@@ -201,6 +203,49 @@ class _AddPaymentState extends State<AddPayment> {
                                 ),
                               ),
                             ),
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Select Student Fees",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 16),
+                              ),
+                            ),
+                            Container(
+                              height: 50,
+                              child: Padding(
+                                padding: EdgeInsets.all(8),
+                                child: DropdownSearch<String>(
+                                  popupProps: PopupProps.menu(
+                                    showSearchBox: true,
+                                    isFilterOnline: true,
+                                    title: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Center(
+                                          child: Text("Search Student Name")),
+                                    ),
+                                    showSelectedItems: true,
+                                    disabledItemFn: (String s) =>
+                                        s.startsWith('I'),
+                                  ),
+                                  items: snapshot.data!.docs
+                                      .map((DocumentSnapshot document) {
+                                        Map<String, dynamic> data = document
+                                            .data()! as Map<String, dynamic>;
+                                        return data["fees"].toString();
+                                      })
+                                      .toList()
+                                      .cast<String>(),
+                                  selectedItem: dropdownValuePrice,
+                                  onChanged: (String? day) {
+                                    print(day);
+                                    setState(() {
+                                      dropdownValuePrice = day!;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
                           ],
                         );
                       }),
@@ -268,24 +313,29 @@ class _AddPaymentState extends State<AddPayment> {
       setState(() {
         _isLoading = true;
       });
-      // String rse = await DatabaseMethods().makeDateSheet(
-      //   day: values,
-      //   date: dateController.text,
-      //   studentclass: dropdownValue,
-      //   subject: subject.text,
-      //   studentname: dropdownValueName,
-      //   dateTime: DateTime.now().millisecondsSinceEpoch.toString(),
-      // );
+      String rse = await DatabaseMethods().addPayment(
+        fees: int.parse(dropdownValuePrice),
+        reciveamount: int.parse(recivePayment.text),
+        studentName: dropdownValueName,
+        remaingAmount: totalValue(
+            int.parse(dropdownValuePrice), int.parse(recivePayment.text)),
+        dateTime: DateTime.now().millisecondsSinceEpoch.toString(),
+      );
 
-      // print(rse);
+      print(rse);
       setState(() {
         _isLoading = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Conguration DataSheet is Added")));
+          SnackBar(content: Text("Conguration Payment Record is Added")));
       Navigator.push(
           context, MaterialPageRoute(builder: (builder) => SideDrawer()));
     }
+  }
+
+  totalValue(int a, int v) {
+    int c = a - v;
+    return c;
   }
 }
