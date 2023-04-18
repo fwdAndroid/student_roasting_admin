@@ -1,30 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:student_roasting_admin/add_forms_admin/add_datesheet.dart';
+import 'package:student_roasting_admin/add_forms_admin/add_student.dart';
+import 'package:student_roasting_admin/admin_models/datesheet_models.dart';
+import 'package:student_roasting_admin/siderbarclasses_admin/datasource/datesheetdatasource.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-/// The home page of the application which hosts the datagrid.
 class DateSheetManagement extends StatefulWidget {
-  /// Creates the home page.
-  DateSheetManagement({Key? key}) : super(key: key);
+  const DateSheetManagement({Key? key}) : super(key: key);
 
   @override
-  _DateSheetManagementState createState() => _DateSheetManagementState();
+  State<DateSheetManagement> createState() => _DateSheetManagementState();
 }
 
-class _DateSheetManagementState extends State<DateSheetManagement> {
-  List<Employee> employees = <Employee>[];
-  late EmployeeDataSource employeeDataSource;
+enum BestTutorSite { javatpoint, w3schools, tutorialandexample }
 
+class _DateSheetManagementState extends State<DateSheetManagement> {
+  TextEditingController controller = TextEditingController();
+  bool isShowUser = false;
   @override
-  void initState() {
-    super.initState();
-    employees = getEmployeeData();
-    employeeDataSource = EmployeeDataSource(employeeData: employees);
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    BestTutorSite _site = BestTutorSite.javatpoint;
     return Scaffold(
       floatingActionButton: Container(
         width: 200,
@@ -37,124 +43,117 @@ class _DateSheetManagementState extends State<DateSheetManagement> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (builder) => AddDateSheet()));
           },
-          child: Text("Create DateSheets"),
+          child: Text("Make DateSheet"),
         ),
       ),
-      body: SfDataGrid(
-        selectionMode: SelectionMode.multiple,
-        source: employeeDataSource,
-        columnWidthMode: ColumnWidthMode.fill,
-        columns: <GridColumn>[
-          GridColumn(
-              columnName: 'teacherName',
-              label: Container(
-                  padding: EdgeInsets.all(16.0),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Class Name',
-                  ))),
-          GridColumn(
-              columnName: 'email',
-              label: Container(
-                  padding: EdgeInsets.all(8.0),
-                  alignment: Alignment.center,
-                  child: Text('Subject'))),
-          GridColumn(
-              columnName: 'designation',
-              label: Container(
-                  padding: EdgeInsets.all(8.0),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Date',
-                    overflow: TextOverflow.ellipsis,
-                  ))),
-          GridColumn(
-              columnName: 'salary',
-              label: Container(
-                  padding: EdgeInsets.all(8.0),
-                  alignment: Alignment.center,
-                  child: Text('Day'))),
-          GridColumn(
-              columnName: 'status',
-              label: Container(
-                  padding: EdgeInsets.all(8.0),
-                  alignment: Alignment.center,
-                  child: Text('Student Name'))),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 670,
+              child: Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: _buildDataGrid(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  List<Employee> getEmployeeData() {
-    return [
-      Employee("Class A", 'Quran', '23-Dec-2023', "Wednesday", "Qasim"),
-      Employee("Class A", 'Arabic', '23-Dec-2023', "Wednesday", "Ali"),
-      Employee("Class A", 'Quran', '23-Dec-2023', "Wednesday", "Asad"),
-      Employee("Class B", 'Arabic', '23-Dec-2023', "Wednesday", "Fawad"),
-      Employee("Class A", 'Quran', '23-Dec-2023', "Wednesday", "Ali"),
-      Employee("Class C", 'Arabic', '23-Dec-2023', "Wednesday", "Zain"),
-      Employee("Class D", 'Arabic', '23-Dec-2023', "Wednesday", "Azlo"),
-      Employee("Class C", 'Arabic', '23-Dec-2023', "Wednesday", "Fawad"),
-      Employee("Class B", 'Arabic', '23-Dec-2023', "Wednesday", "Qasim"),
-      Employee("Class A", 'Quran', '23-Dec-2023', "Wednesday", "Sohaib")
-    ];
-  }
-}
+  late DateSheetManagementDataSource employeeDataSource;
+  List<DateSheetModels> employeeData = [];
 
-/// Custom business object class which contains properties to hold the detailed
-/// information about the employee which will be rendered in datagrid.
-class Employee {
-  /// Creates the employee class with required details.
-  Employee(
-      this.teacherName, this.name, this.designation, this.salary, this.status);
+  final getDataFromFireStore =
+      FirebaseFirestore.instance.collection('datesheet').snapshots();
+  Widget _buildDataGrid() {
+    return StreamBuilder(
+      stream: getDataFromFireStore,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: LoadingAnimationWidget.hexagonDots(
+                  color: Colors.blue, size: 200));
+        }
+        if (snapshot.hasData) {
+          if (employeeData.isNotEmpty) {
+            getDataGridRowFromDataBase(DocumentChange<Object?> data) {
+              return DataGridRow(cells: [
+                DataGridCell<String>(
+                    columnName: 'className', value: data.doc['className']),
+                DataGridCell<String>(
+                    columnName: 'dateTime', value: data.doc['dateTime']),
+                DataGridCell<String>(
+                    columnName: 'uuid', value: data.doc['uuid']),
+                DataGridCell<String>(columnName: 'day', value: data.doc['day']),
+                DataGridCell<String>(
+                    columnName: 'subject', value: data.doc['subject']),
+                DataGridCell<int>(columnName: 'date', value: data.doc['date']),
+                DataGridCell<String>(
+                    columnName: 'studentname', value: data.doc['studentname']),
+              ]);
+            }
 
-  /// Id of an employee.
-  final String teacherName;
+            for (var data in snapshot.data!.docChanges) {
+              if (data.type == DocumentChangeType.modified) {
+                if (data.oldIndex == data.newIndex) {
+                  employeeDataSource.dataGridRows[data.oldIndex] =
+                      getDataGridRowFromDataBase(data);
+                }
+                employeeDataSource.updateDataGridSource();
+              } else if (data.type == DocumentChangeType.added) {
+                employeeDataSource.dataGridRows
+                    .add(getDataGridRowFromDataBase(data));
+                employeeDataSource.updateDataGridSource();
+              } else if (data.type == DocumentChangeType.removed) {
+                employeeDataSource.dataGridRows.removeAt(data.oldIndex);
+                employeeDataSource.updateDataGridSource();
+              }
+            }
+          } else {
+            for (var data in snapshot.data!.docs) {
+              employeeData.add(DateSheetModels(
+                  className: data['className'],
+                  day: data['day'],
+                  dateTime: data['dateTime'],
+                  uuid: data['uuid'],
+                  date: data['date'],
+                  subject: data['subject'],
+                  studentname: data['studentname']));
+            }
+            employeeDataSource = DateSheetManagementDataSource(employeeData);
+          }
 
-  /// Name of an employee.
-  final String name;
-
-  /// Designation of an employee.
-  final String designation;
-
-  /// Salary of an employee.
-  final String salary;
-
-  final String status;
-}
-
-/// An object to set the employee collection data source to the datagrid. This
-/// is used to map the employee data to the datagrid widget.
-class EmployeeDataSource extends DataGridSource {
-  /// Creates the employee data source class with required details.
-  EmployeeDataSource({required List<Employee> employeeData}) {
-    _employeeData = employeeData
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<String>(
-                  columnName: 'teacherName', value: e.teacherName),
-              DataGridCell<String>(columnName: 'email', value: e.name),
-              DataGridCell<String>(
-                  columnName: 'designation', value: e.designation),
-              DataGridCell<String>(columnName: 'salary', value: e.salary),
-              DataGridCell<String>(columnName: 'status', value: e.status),
-            ]))
-        .toList();
-  }
-
-  List<DataGridRow> _employeeData = [];
-
-  @override
-  List<DataGridRow> get rows => _employeeData;
-
-  @override
-  DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((e) {
-      return Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
-      );
-    }).toList());
+          return Padding(
+            padding: const EdgeInsets.all(1.0),
+            child: SfDataGrid(
+              selectionMode: SelectionMode.single,
+              allowFiltering: true,
+              allowSorting: true,
+              source: employeeDataSource,
+              columns: getColumnsDate,
+              columnWidthMode: ColumnWidthMode.fill,
+              onCellTap: (details) {
+                if (details.rowColumnIndex.rowIndex != 0) {
+                  final DataGridRow row = employeeDataSource
+                      .effectiveRows[details.rowColumnIndex.rowIndex - 1];
+                  int index = employeeDataSource.dataGridRows.indexOf(row);
+                  var data = snapshot.data!.docs[index];
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => StudentView(data: data)));
+                }
+              },
+            ),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
   }
 }

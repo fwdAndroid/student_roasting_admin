@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DateSheetModels {
   String uuid;
-  final className;
+  String className;
   String date;
-  final studentname;
+  String studentname;
   final day;
   String subject;
   final dateTime;
