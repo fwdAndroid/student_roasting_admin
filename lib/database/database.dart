@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:student_roasting_admin/admin_models/student_model.dart';
 import 'package:student_roasting_admin/admin_models/teacher_models.dart';
 
 import 'package:uuid/uuid.dart';
@@ -53,48 +54,54 @@ class DatabaseMethods {
     return res;
   }
 
-  // //add categories
-  // Future<String> addcategories({
-  //   required String region,
-  //   required String zone,
-  //   required String area,
-  //   required String territory,
-  // }) async {
-  //   String res = 'Some error occured';
+  //add Studntds
+  Future<String> addStudents(
+      {required String parentemail,
+      required String parentmobile,
+      required String parentname,
+      required String studentclass,
+      required String studentStatus,
+      required String studentname,
+      required int fees,
+      required String addressStudent,
+      required final dateTime,
+      required String subject}) async {
+    String res = 'Some error occured';
 
-  //   try {
-  //     if (region.isNotEmpty ||
-  //         zone.isNotEmpty ||
-  //         area.isNotEmpty ||
-  //         territory.isNotEmpty) {
-  //       //Add User to the database with modal
+    try {
+      //Add User to the database with modal
 
-  //       try {
-  //         //Add User to the database with modal
-  //         String postId = Uuid().v1();
+      try {
+        //Add User to the database with modal
+        String postId = Uuid().v1();
 
-  //         CategoryModels userModel = CategoryModels(
-  //             region: region,
-  //             area: area,
-  //             uuid: postId,
-  //             zone: zone,
-  //             territory: territory);
-  //         await FirebaseFirestore.instance
-  //             .collection('categories')
-  //             .doc(postId)
-  //             .set(userModel.toJson());
+        StudentModel userModel = StudentModel(
+            subject: subject,
+            dateTime: dateTime,
+            addressStudent: addressStudent,
+            fees: fees,
+            studentStatus: studentStatus,
+            studentname: studentname,
+            parentemail: parentemail,
+            parentmobile: parentmobile,
+            uuid: postId,
+            parentname: parentname,
+            studentclass: studentclass);
+        await FirebaseFirestore.instance
+            .collection('students')
+            .doc(postId)
+            .set(userModel.toJson());
 
-  //         res = 'success';
-  //       } catch (e) {
-  //         res = e.toString();
-  //       }
-  //       return res;
-  //     }
-  //   } catch (e) {
-  //     res = e.toString();
-  //   }
-  //   return res;
-  // }
+        res = 'success';
+      } catch (e) {
+        res = e.toString();
+      }
+      return res;
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
 
   //Add Product
   // Future<String> addProduct({

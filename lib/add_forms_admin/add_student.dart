@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:student_roasting_admin/database/database.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:student_roasting_admin/widgets/exc_button.dart';
 import 'package:student_roasting_admin/widgets/input_text.dart';
 import 'package:student_roasting_admin/widgets/sidebar.dart';
+import 'package:student_roasting_admin/widgets/styles.dart';
 
 class AddStudent extends StatefulWidget {
   const AddStudent({super.key});
@@ -25,7 +27,6 @@ class _AddStudentState extends State<AddStudent> {
   TextEditingController fees = TextEditingController();
 
   bool _isLoading = false;
-  String dropdownValue = 'Project Name';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,7 +138,7 @@ class _AddStudentState extends State<AddStudent> {
           SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 50),
-              width: 448,
+              width: 458,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -154,44 +155,62 @@ class _AddStudentState extends State<AddStudent> {
                     height: 30,
                   ),
 
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Parent Name",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(height: 9),
-                  InputText(
-                    controller: parentname,
-                    labelText: "Geroge",
-                    keyboardType: TextInputType.visiblePassword,
-                    onChanged: (value) {},
-                    onSaved: (val) {},
-                    textInputAction: TextInputAction.done,
-                    isPassword: false,
-                    enabled: true,
-                  ),
-                  const SizedBox(height: 10),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Parent Email",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(height: 9),
-                  InputText(
-                    controller: parentemail,
-                    labelText: "fwdkaleem@gmail.com",
-                    keyboardType: TextInputType.visiblePassword,
-                    onChanged: (value) {},
-                    onSaved: (val) {},
-                    textInputAction: TextInputAction.done,
-                    isPassword: false,
-                    enabled: true,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Parent Name",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 16),
+                              ),
+                            ),
+                            const SizedBox(height: 9),
+                            InputText(
+                              controller: parentname,
+                              labelText: "Geroge",
+                              keyboardType: TextInputType.visiblePassword,
+                              onChanged: (value) {},
+                              onSaved: (val) {},
+                              textInputAction: TextInputAction.done,
+                              isPassword: false,
+                              enabled: true,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Parent Email",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 16),
+                              ),
+                            ),
+                            const SizedBox(height: 9),
+                            InputText(
+                              controller: parentemail,
+                              labelText: "fwdkaleem@gmail.com",
+                              keyboardType: TextInputType.visiblePassword,
+                              onChanged: (value) {},
+                              onSaved: (val) {},
+                              textInputAction: TextInputAction.done,
+                              isPassword: false,
+                              enabled: true,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 10),
                   const Align(
@@ -256,47 +275,62 @@ class _AddStudentState extends State<AddStudent> {
                   ),
                   const SizedBox(height: 9),
                   //location of plot
-
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Class",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(height: 9),
-                  InputText(
-                    controller: studentclass,
-                    labelText: "Class A",
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {},
-                    onSaved: (val) {},
-                    textInputAction: TextInputAction.done,
-                    isPassword: false,
-                    enabled: true,
-                  ),
-                  SizedBox(
-                    height: 9,
-                  ),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Subject",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(height: 9),
-                  InputText(
-                    controller: subject,
-                    labelText: "Quran",
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {},
-                    onSaved: (val) {},
-                    textInputAction: TextInputAction.done,
-                    isPassword: false,
-                    enabled: true,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Class",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 16),
+                              ),
+                            ),
+                            const SizedBox(height: 9),
+                            InputText(
+                              controller: studentclass,
+                              labelText: "Class A",
+                              keyboardType: TextInputType.number,
+                              onChanged: (value) {},
+                              onSaved: (val) {},
+                              textInputAction: TextInputAction.done,
+                              isPassword: false,
+                              enabled: true,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Subject",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 16),
+                              ),
+                            ),
+                            const SizedBox(height: 9),
+                            InputText(
+                              controller: subject,
+                              labelText: "Quran",
+                              keyboardType: TextInputType.number,
+                              onChanged: (value) {},
+                              onSaved: (val) {},
+                              textInputAction: TextInputAction.done,
+                              isPassword: false,
+                              enabled: true,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 9,
@@ -340,7 +374,7 @@ class _AddStudentState extends State<AddStudent> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),
                           ),
-                    onPressed: () {},
+                    onPressed: addStudents,
                   ),
 
                   const SizedBox(height: 30),
@@ -351,5 +385,48 @@ class _AddStudentState extends State<AddStudent> {
         ],
       ),
     );
+  }
+
+  void addStudents() async {
+    if (parentemail.text.isEmpty &&
+        parentname.text.isEmpty &&
+        studentname.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("All Fields are required")));
+    } else if (parentemail.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("parent email address is required")));
+    } else if (parentname.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Parent Name of the user is required")));
+    } else if (studentname.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Student name is required")));
+    } else {
+      setState(() {
+        _isLoading = true;
+      });
+      String rse = await DatabaseMethods().addStudents(
+        addressStudent: address.text,
+        parentemail: parentemail.text,
+        parentmobile: parentmobile.text,
+        parentname: parentname.text,
+        studentStatus: "Enroll",
+        studentclass: studentclass.text,
+        studentname: studentname.text,
+        subject: studentclass.text,
+        fees: int.parse(fees.text),
+        dateTime: DateTime.now().millisecondsSinceEpoch.toString(),
+      );
+
+      print(rse);
+      setState(() {
+        _isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Conguration Student is Added")));
+      Navigator.pop(context);
+    }
   }
 }
