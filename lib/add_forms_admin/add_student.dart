@@ -415,7 +415,7 @@ class _AddStudentState extends State<AddStudent> {
         studentStatus: "Enroll",
         studentclass: studentclass.text,
         studentname: studentname.text,
-        subject: studentclass.text,
+        subject: subject.text,
         fees: int.parse(fees.text),
         dateTime: DateTime.now().millisecondsSinceEpoch.toString(),
       );
