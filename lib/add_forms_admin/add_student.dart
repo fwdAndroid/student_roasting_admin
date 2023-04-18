@@ -27,6 +27,7 @@ class _AddStudentState extends State<AddStudent> {
   TextEditingController fees = TextEditingController();
 
   bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
