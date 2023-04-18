@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:student_roasting_admin/database/database.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:student_roasting_admin/widgets/exc_button.dart';
 import 'package:student_roasting_admin/widgets/input_text.dart';
 import 'package:student_roasting_admin/widgets/sidebar.dart';
+import 'package:student_roasting_admin/widgets/styles.dart';
 
 class AddTeachers extends StatefulWidget {
   const AddTeachers({super.key});
@@ -22,10 +24,17 @@ class _AddTeachersState extends State<AddTeachers> {
 
   TextEditingController teachersubjects = TextEditingController();
   TextEditingController assignedclass = TextEditingController();
-  TextEditingController salary = TextEditingController();
 
+  bool passwordVisible = false;
   bool _isLoading = false;
-  String dropdownValue = 'Project Name';
+  String _errorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    passwordVisible = true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,9 +199,11 @@ class _AddTeachersState extends State<AddTeachers> {
                   const SizedBox(height: 9),
                   InputText(
                     controller: teacheremail,
-                    labelText: "fwdkaleem@gmail.com",
+                    labelText: "example@gmail.com",
                     keyboardType: TextInputType.visiblePassword,
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      validateEmail(value);
+                    },
                     onSaved: (val) {},
                     textInputAction: TextInputAction.done,
                     isPassword: false,
@@ -201,46 +212,116 @@ class _AddTeachersState extends State<AddTeachers> {
                   SizedBox(
                     height: 9,
                   ),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Password",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(height: 9),
-                  InputText(
-                    controller: teacherpassword,
-                    labelText: "********",
-                    keyboardType: TextInputType.visiblePassword,
-                    onChanged: (value) {},
-                    onSaved: (val) {},
-                    textInputAction: TextInputAction.done,
-                    isPassword: false,
-                    enabled: true,
-                  ),
-                  SizedBox(
-                    height: 9,
-                  ),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Confrim Password",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(height: 9),
-                  InputText(
-                    controller: teacherconfrimpassword,
-                    labelText: "********",
-                    keyboardType: TextInputType.visiblePassword,
-                    onChanged: (value) {},
-                    onSaved: (val) {},
-                    textInputAction: TextInputAction.done,
-                    isPassword: false,
-                    enabled: true,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Password",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 16),
+                              ),
+                            ),
+                            const SizedBox(height: 9),
+                            TextFormField(
+                              validator: (value) {
+                                // add your custom validation here.
+                                if (value!.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                if (value.length < 3) {
+                                  return 'Must be more than 2 charater';
+                                }
+                              },
+                              controller: teacherpassword,
+                              obscureText: passwordVisible,
+                              decoration: InputDecoration(
+                                focusedBorder: AppStyles.focusedBorder,
+                                disabledBorder: AppStyles.focusBorder,
+                                enabledBorder: AppStyles.focusBorder,
+                                errorBorder: AppStyles.focusErrorBorder,
+                                focusedErrorBorder: AppStyles.focusErrorBorder,
+                                hintText: "Password",
+                                suffixIcon: IconButton(
+                                  icon: Icon(passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: () {
+                                    setState(
+                                      () {
+                                        passwordVisible = !passwordVisible;
+                                      },
+                                    );
+                                  },
+                                ),
+                                alignLabelWithHint: false,
+                                filled: true,
+                              ),
+                              keyboardType: TextInputType.visiblePassword,
+                              textInputAction: TextInputAction.done,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Confrim Password",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 16),
+                              ),
+                            ),
+                            const SizedBox(height: 9),
+                            TextFormField(
+                              validator: (value) {
+                                // add your custom validation here.
+                                if (value!.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                if (value.length < 3) {
+                                  return 'Must be more than 2 charater';
+                                }
+                              },
+                              controller: teacherpassword,
+                              obscureText: passwordVisible,
+                              decoration: InputDecoration(
+                                focusedBorder: AppStyles.focusedBorder,
+                                disabledBorder: AppStyles.focusBorder,
+                                enabledBorder: AppStyles.focusBorder,
+                                errorBorder: AppStyles.focusErrorBorder,
+                                focusedErrorBorder: AppStyles.focusErrorBorder,
+                                hintText: "Password",
+                                suffixIcon: IconButton(
+                                  icon: Icon(passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: () {
+                                    setState(
+                                      () {
+                                        passwordVisible = !passwordVisible;
+                                      },
+                                    );
+                                  },
+                                ),
+                                alignLabelWithHint: false,
+                                filled: true,
+                              ),
+                              keyboardType: TextInputType.visiblePassword,
+                              textInputAction: TextInputAction.done,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 10),
                   //Plot Price
@@ -311,27 +392,7 @@ class _AddTeachersState extends State<AddTeachers> {
                   SizedBox(
                     height: 9,
                   ),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Salary",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(height: 9),
-                  InputText(
-                    controller: salary,
-                    labelText: "234",
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {},
-                    onSaved: (val) {},
-                    textInputAction: TextInputAction.done,
-                    isPassword: false,
-                    enabled: true,
-                  ),
 
-                  SizedBox(height: 10),
                   const SizedBox(height: 30),
                   WonsButton(
                     height: 50,
@@ -350,7 +411,7 @@ class _AddTeachersState extends State<AddTeachers> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),
                           ),
-                    onPressed: () {},
+                    onPressed: addTeachers,
                   ),
 
                   const SizedBox(height: 30),
@@ -361,5 +422,63 @@ class _AddTeachersState extends State<AddTeachers> {
         ],
       ),
     );
+  }
+
+  void addTeachers() async {
+    if (teacheremail.text.isEmpty &&
+        teacherpassword.text.isEmpty &&
+        teachername.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("All Fields are required")));
+    } else if (teacheremail.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("email address is required")));
+    } else if (teachername.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("name of the user is required")));
+    } else if (teacherpassword.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("password is required")));
+    } else {
+      setState(() {
+        _isLoading = true;
+      });
+      String rse = await DatabaseMethods().addTeachers(
+        teacheremail: teacheremail.text,
+        teachername: teachername.text,
+        teacherpassword: teacherpassword.text,
+        teacherqualification: teacherqualification.text,
+        teachersubjects: teachersubjects.text,
+        cpassword: teacherpassword.text,
+        assignedclass: assignedclass.text,
+        blocked: false,
+        time: DateTime.now().millisecondsSinceEpoch.toString(),
+      );
+
+      print(rse);
+      setState(() {
+        _isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Conguration Data is Added")));
+      Navigator.pop(context);
+    }
+  }
+
+  void validateEmail(String val) {
+    if (val.isEmpty) {
+      setState(() {
+        _errorMessage = "Email can not be empty";
+      });
+    } else if (!EmailValidator.validate(val, true)) {
+      setState(() {
+        _errorMessage = "Invalid Email Address";
+      });
+    } else {
+      setState(() {
+        _errorMessage = "";
+      });
+    }
   }
 }
