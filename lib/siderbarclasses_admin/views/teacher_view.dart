@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:student_roasting_admin/add_forms_admin/assigned_class.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:student_roasting_admin/widgets/exc_button.dart';
 import 'package:student_roasting_admin/widgets/input_text.dart';
@@ -33,17 +34,44 @@ class TeacherViewState extends State<TeacherView> {
     assignedclass.text = widget.data.get("teacher_class");
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primary,
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Text(
-          "Go Back",
-          textAlign: TextAlign.center,
-        ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15.0))),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            width: 200,
+            child: FloatingActionButton(
+              backgroundColor: AppColors.primary,
+              shape: BeveledRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => AssignedClass(
+                              teacherUid: widget.data.get("uuid"),
+                              teachername: widget.data.get("teacher_name"),
+                            )));
+              },
+              child: Text("Assigned Class"),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          FloatingActionButton(
+            backgroundColor: AppColors.primary,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              "Go Back",
+              textAlign: TextAlign.center,
+            ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          ),
+        ],
       ),
       body: Row(
         children: [

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:student_roasting_admin/admin_models/class_model.dart';
 import 'package:student_roasting_admin/admin_models/datesheet_models.dart';
 import 'package:student_roasting_admin/admin_models/payment_models.dart';
 import 'package:student_roasting_admin/admin_models/student_model.dart';
@@ -10,8 +11,6 @@ import 'package:uuid/uuid.dart';
 class DatabaseMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  //UUuid mean FIreabase AuthID
-  //bussiness Manager
   Future<String> addTeachers(
       {required String teachername,
       required String teacheremail,
@@ -147,7 +146,49 @@ class DatabaseMethods {
     return res;
   }
 
-  //Add Product
+  //Assigned Class
+  Future<String> assinedClass(
+      {required final teacherName,
+      required String studentclass,
+      required final studentname,
+      required String teacherUid,
+      required final dateTime,
+      required String subject}) async {
+    String res = 'Some error occured';
+
+    try {
+      //Add User to the database with modal
+
+      try {
+        //Add User to the database with modal
+        String postId = Uuid().v1();
+
+        ClassModels userModel = ClassModels(
+          studentSubject: subject,
+          dateTime: dateTime,
+          studentClass: studentclass,
+          studentName: studentname,
+          teacherUid: teacherUid,
+          teacher_name: teacherName,
+          uuid: postId,
+        );
+        await FirebaseFirestore.instance
+            .collection('assignedClass')
+            .doc(postId)
+            .set(userModel.toJson());
+
+        res = 'success';
+      } catch (e) {
+        res = e.toString();
+      }
+      return res;
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
+  //Add Payment
   Future<String> addPayment(
       {required int fees,
       required int reciveamount,

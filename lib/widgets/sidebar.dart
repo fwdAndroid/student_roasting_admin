@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
+import 'package:student_roasting_admin/siderbarclasses_admin/class_management.dart';
 import 'package:student_roasting_admin/siderbarclasses_admin/datasheet_management.dart';
 import 'package:student_roasting_admin/siderbarclasses_admin/noti.dart';
 import 'package:student_roasting_admin/siderbarclasses_admin/payment_management.dart';
@@ -152,6 +153,10 @@ class ExampleSidebarX extends StatelessWidget {
           label: 'Notifications',
         ),
         SidebarXItem(
+          icon: Icons.class_,
+          label: 'Class Management',
+        ),
+        SidebarXItem(
           icon: Icons.logout,
           label: 'Logout',
         ),
@@ -186,6 +191,8 @@ class _ScreensExample extends StatelessWidget {
           case 4:
             return Noti();
           case 5:
+            return ClassManagement();
+          case 6:
             return AlertDialog(
               title: const Text('Sign Out Alert'),
               content: SingleChildScrollView(
