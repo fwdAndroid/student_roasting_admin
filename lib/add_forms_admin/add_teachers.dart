@@ -444,6 +444,7 @@ class _AddTeachersState extends State<AddTeachers> {
         _isLoading = true;
       });
       String rse = await DatabaseMethods().addTeachers(
+        teacherType: "Teacher",
         teacheremail: teacheremail.text,
         teachername: teachername.text,
         teacherpassword: teacherpassword.text,

@@ -10,9 +10,11 @@ class TeacherModels {
   String teacher_subjects;
   String teacher_class;
   final dateTime;
+  String teacherType;
 
   TeacherModels({
     required this.uuid,
+    required this.teacherType,
     required this.password,
     required this.teacher_qualification,
     required this.email,
@@ -27,6 +29,7 @@ class TeacherModels {
   Map<String, dynamic> toJson() => {
         "teacher_class": teacher_class,
         'uuid': uuid,
+        'teacherType': teacherType,
         'email': email,
         'password': password,
         'teacher_qualification': teacher_qualification,
@@ -41,15 +44,15 @@ class TeacherModels {
     var snapshot = snaps.data() as Map<String, dynamic>;
 
     return TeacherModels(
-      teacher_qualification: snapshot['teacher_qualification'],
-      teacher_class: snapshot['teacher_class'],
-      confrim_password: snapshot['confrim_password'],
-      uuid: snapshot['uuid'],
-      email: snapshot['email'],
-      teacher_subjects: snapshot['teacher_subjects'],
-      teacher_name: snapshot['teacher_name'],
-      password: snapshot['password'],
-      dateTime: snapshot['dateTime'],
-    );
+        teacher_qualification: snapshot['teacher_qualification'],
+        teacher_class: snapshot['teacher_class'],
+        confrim_password: snapshot['confrim_password'],
+        uuid: snapshot['uuid'],
+        email: snapshot['email'],
+        teacher_subjects: snapshot['teacher_subjects'],
+        teacher_name: snapshot['teacher_name'],
+        password: snapshot['password'],
+        dateTime: snapshot['dateTime'],
+        teacherType: snapshot['teacherType']);
   }
 }

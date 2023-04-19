@@ -12,17 +12,17 @@ class DatabaseMethods {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   //UUuid mean FIreabase AuthID
   //bussiness Manager
-  Future<String> addTeachers({
-    required String teachername,
-    required String teacheremail,
-    required String teacherpassword,
-    required String teacherqualification,
-    required String teachersubjects,
-    required String assignedclass,
-    required String cpassword,
-    required final time,
-    required bool blocked,
-  }) async {
+  Future<String> addTeachers(
+      {required String teachername,
+      required String teacheremail,
+      required String teacherpassword,
+      required String teacherqualification,
+      required String teachersubjects,
+      required String assignedclass,
+      required String cpassword,
+      required final time,
+      required bool blocked,
+      required String teacherType}) async {
     String res = 'Some error occured';
 
     try {
@@ -33,11 +33,12 @@ class DatabaseMethods {
 
         TeacherModels userModel = TeacherModels(
           teacher_name: teachername,
-          teacher_class: teachername,
+          teacher_class: assignedclass,
           teacher_qualification: teacherqualification,
           teacher_subjects: teachersubjects,
           dateTime: time,
           confrim_password: cpassword,
+          teacherType: teacherType,
           uuid: cred.user!.uid,
           email: teacheremail,
           password: teacherpassword,

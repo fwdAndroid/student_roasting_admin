@@ -130,6 +130,7 @@ class _TeacherManagementState extends State<TeacherManagement> {
                 teacher_name: data['teacher_name'],
                 email: data['email'],
                 password: data['password'],
+                teacherType: data['teacherType'],
                 teacher_qualification: data['teacher_qualification'],
                 confrim_password: data['confrim_password'],
               ));
