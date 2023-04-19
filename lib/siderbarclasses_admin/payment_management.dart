@@ -1,27 +1,38 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:student_roasting_admin/add_forms_admin/add_payment.dart';
+import 'package:student_roasting_admin/admin_models/payment_models.dart';
+import 'package:student_roasting_admin/siderbarclasses_admin/datasource/paymentdatasource.dart';
 import 'package:student_roasting_admin/widgets/colors.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+// ignore: depend_on_referenced_packages
 
-/// The home page of the application which hosts the datagrid.
+//Local imports
+
 class PaymentManagement extends StatefulWidget {
-  /// Creates the home page.
-  PaymentManagement({Key? key}) : super(key: key);
+  const PaymentManagement({super.key});
 
   @override
-  _PaymentManagementState createState() => _PaymentManagementState();
+  State<PaymentManagement> createState() => _PaymentManagementState();
 }
 
 class _PaymentManagementState extends State<PaymentManagement> {
-  List<Employee> employees = <Employee>[];
-  late EmployeeDataSource employeeDataSource;
+  TextEditingController controller = TextEditingController();
+  bool isShowUser = false;
 
   @override
-  void initState() {
-    super.initState();
-    employees = getEmployeeData();
-    employeeDataSource = EmployeeDataSource(employeeData: employees);
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
   }
+
+  final GlobalKey<SfDataGridState> _key = GlobalKey<SfDataGridState>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,124 +48,114 @@ class _PaymentManagementState extends State<PaymentManagement> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (builder) => AddPayment()));
           },
-          child: Text("Add Payment"),
+          child: Text("Add Payments"),
         ),
       ),
-      body: SfDataGrid(
-        selectionMode: SelectionMode.multiple,
-        source: employeeDataSource,
-        columnWidthMode: ColumnWidthMode.fill,
-        columns: <GridColumn>[
-          GridColumn(
-              columnName: 'studentName',
-              label: Container(
-                  padding: EdgeInsets.all(16.0),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Student Name',
-                  ))),
-          GridColumn(
-              columnName: 'class',
-              label: Container(
-                  padding: EdgeInsets.all(8.0),
-                  alignment: Alignment.center,
-                  child: Text('Total Payment'))),
-          GridColumn(
-              columnName: 'designation',
-              label: Container(
-                  padding: EdgeInsets.all(8.0),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Recived',
-                    overflow: TextOverflow.ellipsis,
-                  ))),
-          GridColumn(
-              columnName: 'salary',
-              label: Container(
-                  padding: EdgeInsets.all(8.0),
-                  alignment: Alignment.center,
-                  child: Text('Remaining'))),
-          GridColumn(
-              columnName: 'status',
-              label: Container(
-                  padding: EdgeInsets.all(8.0),
-                  alignment: Alignment.center,
-                  child: Text('Payment Status'))),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 670,
+              child: Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: _buildDataGrid(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  List<Employee> getEmployeeData() {
-    return [
-      Employee("James", '20000', '1000', 20000, "Completed"),
-      Employee("Kathryn", '20000', '1000', 30000, "Remaining"),
-      Employee("Lara", '20000', '1000', 15000, "Remaining"),
-      Employee("Michael", '20000', '1000', 15000, "Remaining"),
-      Employee("Martin", '20000', '1000', 15000, "Completed"),
-      Employee("Newberry", '20000', '1000', 15000, "Remaining"),
-      Employee("Balnc", '20000', '1000', 15000, "Completed"),
-      Employee("Perry", '20000', '1000', 15000, "Completed"),
-      Employee("Gable", '20000', '1000', 15000, "Remaining"),
-      Employee("Grimes", '20000', '1000', 15000, "Remaining")
-    ];
-  }
-}
+  late PaymentDataSource employeeDataSource;
+  List<PaymentModel> employeeData = [];
 
-/// Custom business object class which contains properties to hold the detailed
-/// information about the employee which will be rendered in datagrid.
-class Employee {
-  /// Creates the employee class with required details.
-  Employee(
-      this.studentName, this.name, this.designation, this.salary, this.status);
+  final getDataFromFireStore =
+      FirebaseFirestore.instance.collection('payments').snapshots();
+  Widget _buildDataGrid() {
+    return StreamBuilder(
+      stream: getDataFromFireStore,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: LoadingAnimationWidget.hexagonDots(
+                  color: Colors.blue, size: 200));
+        }
+        if (snapshot.hasData) {
+          if (employeeData.isNotEmpty) {
+            getDataGridRowFromDataBase(DocumentChange<Object?> data) {
+              return DataGridRow(cells: [
+                DataGridCell<String>(
+                    columnName: 'fees', value: data.doc['fees']),
+                DataGridCell<String>(
+                    columnName: 'uuid', value: data.doc['uuid']),
+                DataGridCell<String>(
+                    columnName: 'recievedPayment',
+                    value: data.doc['recievedPayment']),
+                DataGridCell<String>(
+                    columnName: 'remainingPayment',
+                    value: data.doc['remainingPayment']),
+                DataGridCell<String>(
+                    columnName: 'studentname', value: data.doc['studentname']),
+              ]);
+            }
 
-  /// Id of an employee.
-  final String studentName;
+            for (var data in snapshot.data!.docChanges) {
+              if (data.type == DocumentChangeType.modified) {
+                if (data.oldIndex == data.newIndex) {
+                  employeeDataSource.dataGridRows[data.oldIndex] =
+                      getDataGridRowFromDataBase(data);
+                }
+                employeeDataSource.updateDataGridSource();
+              } else if (data.type == DocumentChangeType.added) {
+                employeeDataSource.dataGridRows
+                    .add(getDataGridRowFromDataBase(data));
+                employeeDataSource.updateDataGridSource();
+              } else if (data.type == DocumentChangeType.removed) {
+                employeeDataSource.dataGridRows.removeAt(data.oldIndex);
+                employeeDataSource.updateDataGridSource();
+              }
+            }
+          } else {
+            for (var data in snapshot.data!.docs) {
+              employeeData.add(PaymentModel(
+                fees: data['fees'],
+                uuid: data['uuid'],
+                recievedPayment: data['recievedPayment'],
+                remainingPayment: data['remainingPayment '],
+                studentname: data['studentname'],
+                dateTime: data['dateTime'],
+              ));
+            }
+            employeeDataSource = PaymentDataSource(employeeData);
+          }
 
-  /// Name of an employee.
-  final String name;
-
-  /// Designation of an employee.
-  final String designation;
-
-  /// Salary of an employee.
-  final int salary;
-
-  final String status;
-}
-
-/// An object to set the employee collection data source to the datagrid. This
-/// is used to map the employee data to the datagrid widget.
-class EmployeeDataSource extends DataGridSource {
-  /// Creates the employee data source class with required details.
-  EmployeeDataSource({required List<Employee> employeeData}) {
-    _employeeData = employeeData
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<String>(
-                  columnName: 'studentName', value: e.studentName),
-              DataGridCell<String>(columnName: 'class', value: e.name),
-              DataGridCell<String>(
-                  columnName: 'designation', value: e.designation),
-              DataGridCell<int>(columnName: 'salary', value: e.salary),
-              DataGridCell<String>(columnName: 'status', value: e.status),
-            ]))
-        .toList();
-  }
-
-  List<DataGridRow> _employeeData = [];
-
-  @override
-  List<DataGridRow> get rows => _employeeData;
-
-  @override
-  DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((e) {
-      return Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
-      );
-    }).toList());
+          return Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: SfDataGrid(
+              source: employeeDataSource,
+              columns: getColumnsItem,
+              columnWidthMode: ColumnWidthMode.fill,
+              onCellTap: (details) {
+                if (details.rowColumnIndex.rowIndex != 0) {
+                  final DataGridRow row = employeeDataSource
+                      .effectiveRows[details.rowColumnIndex.rowIndex - 1];
+                  int index = employeeDataSource.dataGridRows.indexOf(row);
+                  var data = snapshot.data!.docs[index];
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => PaymentManagementView(data: data)));
+                }
+              },
+            ),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
   }
 }
